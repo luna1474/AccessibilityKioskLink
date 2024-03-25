@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buttons</title>
+</head>
+<body>
+    <h1>Button</h1>
+    <div id="buttons-container">
+        <!-- Buttons will be appended here -->
+    </div>
+
+    <script>
+        function sendClick(index) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/click', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({ 'index': index }));
+        }
+
+        function updateButtons() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/get_data', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        var buttonsContainer = document.getElementById('buttons-container');
+                        buttonsContainer.innerHTML = ''; // Clear previous buttons
+                        data.names.forEach(function (name, index) {
+                            var button = document.createElement('button');
+                            button.textContent = name;
+                            button.onclick = function () {
+                                sendClick(index);
+                            };
+                            buttonsContainer.appendChild(button);
+                        });
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // Update buttons every 2 seconds
+        setInterval(updateButtons, 1000);
+
+        // Initial update
+        updateButtons();
+    </script>
+</body>
+</html>
