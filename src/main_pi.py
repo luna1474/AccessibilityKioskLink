@@ -14,8 +14,9 @@ if __name__ == '__main__':
     socket_queue = queue.Queue()
     main_queue = queue.Queue()
     server_model = socketlib("server", "0.0.0.0", 5050, main_queue, socket_queue)
-    mouse_model = mouselib("server", "0.0.0.0", 5051, main_queue, None)
+    mouse_model = mouselib("server", "0.0.0.0", 5051, None, None)
     server_model.start()
+    mouse_model.start()
 
     cap = capture()
     time.sleep(5)
