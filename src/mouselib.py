@@ -17,8 +17,8 @@ class mouselib(socketlib.socketlib):
 
             while (self._running):
                 try:
-                    msg: Msg = self.my_recv(1024)
-                    self.ser.write(f"click,{msg.x},{msg.y}") # command to pico
+                    data: str = self.my_recv(1024)
+                    self.ser.write(data) # command to pico
                 except Exception as e:
                     print(e)
                     self._logger.error("cannot receive data")
@@ -31,6 +31,7 @@ class mouselib(socketlib.socketlib):
 
                 if (not self._message_queue.empty()):
                     msg = self._message_queue.get()
-                    self.my_send(msg)
+                    data: str = f"click,{msg.x},{msg.y}"
+                    self.my_send(data)
                 else:
                     time.sleep(0.5)

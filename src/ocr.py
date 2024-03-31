@@ -13,10 +13,7 @@ class ocr():
     def __init__(self):
         # OCR 엔진에 한글 언어를 설정합니다.
         pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
-        self.custom_config = r'--oem 1 --psm 6 -l kor --tessdata-dir /root/projects/tessdata_fast'
-
-        # 캡처된 이미지 디렉토리를 지정합니다.
-        self.captured_images_directory = "./projects/"
+        self.custom_config = r'--oem 1 --psm 6 -l kor --tessdata-dir /root/AccessibilityKioskLink/src/tessdata_fast'
 
     def process_image_for_ocr(self, file_path):
         # TODO : Implement using opencv

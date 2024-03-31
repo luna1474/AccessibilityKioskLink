@@ -46,6 +46,8 @@ while(True):
         elif msg.msg == "mouse":
             obj = ocr_results[msg.idx]
             print(obj)
+            msg = Msg()
+            msg.msg = "mouse xy"
             msg.x = obj[1]
             msg.y = obj[2]
             mouse_queue.put(msg)
