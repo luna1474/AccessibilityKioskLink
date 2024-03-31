@@ -128,7 +128,7 @@ class ocr():
         filtered_text = re.sub(r'[^가-힣\s]', '', text)
         return filtered_text
 
-    def process_ocr(self, image):
+    def process_ocr(self, image, confidence: int = 60, proximity_threshold_x: int = 100, proximity_threshold_y: int = 30):
         # 이미지 파일을 읽어옵니다.
         preprocessed_image = self.preprocess_image2(image)
         cv2.imwrite("t2.jpg", preprocessed_image)
@@ -144,7 +144,7 @@ class ocr():
         ocr_results = []
         for i, word in enumerate(data['text']):
             # confidence가 일정 수준 이상인 단어만 고려합니다.
-            if int(data['conf'][i]) > 30:
+            if int(data['conf'][i]) > confidence:
                 x, y, w, h = data['left'][i], data['top'][i], data['width'][i], data['height'][i]
 
                 # 이전 단어와의 좌표 차이를 계산합니다.
@@ -153,7 +153,7 @@ class ocr():
                     y_diff = abs(y - previous_y)
 
                     # 좌표 차이가 15 이하인 경우, 단어를 병합합니다.
-                    if x_diff <= 25 and y_diff <= 10:
+                    if x_diff <= proximity_threshold_x and y_diff <= proximity_threshold_y:
                         merged_word += ' ' + word
                         continue
 

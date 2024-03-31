@@ -3,7 +3,7 @@ import pickle
 from Msg import Msg
 import time
 import socketlib
-# import pyautogui
+
 
 class mouselib(socketlib.socketlib):
     def __init__(self, mode: str, ip_addr: str, port: int, main_queue, message_queue):
@@ -11,12 +11,14 @@ class mouselib(socketlib.socketlib):
 
     def run(self):
         if (self._mode == "server"):
+            import serial
+            ser = serial.Serial('/dev/ttyS0', 9600)  # Change '/dev/ttyS0' to the appropriate UART port
             self.run_server()
 
             while (self._running):
                 try:
                     msg: Msg = self.my_recv(1024)
-                    self.click_mouse(msg)
+                    self.ser.write(f"click,{msg.x},{msg.y}") # command to pico
                 except Exception as e:
                     print(e)
                     self._logger.error("cannot receive data")
@@ -32,8 +34,3 @@ class mouselib(socketlib.socketlib):
                     self.my_send(msg)
                 else:
                     time.sleep(0.5)
-
-    def click_mouse(self, msg):
-        x = msg.x
-        y = msg.y
-        # pyautogui.click(x, y)
