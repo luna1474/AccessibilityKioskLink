@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Buttons</title>
+    <title>키오스크 메뉴</title>
+    <style>
+        button {
+            font-size: 60px; /* 버튼 텍스트 크기 설정 */
+            padding: 20px 40px; /* 버튼 내부 여백 설정 (기존의 20px 40px에서 40px 80px로 변경) */
+            min-width: 200px; /* 버튼 최소 너비 설정 (기존의 100px에서 200px로 변경) */
+            min-height: 100px; /* 버튼 최소 높이 설정 (기존의 50px에서 100px로 변경) */
+            margin: 10px; /* 버튼 사이의 간격 설정 */
+        }
+
+        /* 스마트폰 화면 크기에 따라 버튼 크기 조정 */
+        @media screen and (max-width: 768px) {
+            button {
+                width: 400px; /* 스마트폰 화면 크기에 맞춰서 버튼 너비 조정 */
+                height: 200px; /* 스마트폰 화면 크기에 맞춰서 버튼 높이 조정 */
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Button</h1>
     <div id="buttons-container">
         <!-- Buttons will be appended here -->
     </div>
 
     <script>
+        var buttonsContainer = document.getElementById('buttons-container');
+        var buttons = []; // 버튼 요소들을 저장할 배열
+
         function sendClick(index) {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/click', true);
@@ -24,16 +43,39 @@
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         var data = JSON.parse(xhr.responseText);
-                        var buttonsContainer = document.getElementById('buttons-container');
-                        buttonsContainer.innerHTML = ''; // Clear previous buttons
-                        data.names.forEach(function (name, index) {
-                            var button = document.createElement('button');
-                            button.textContent = name;
-                            button.onclick = function () {
-                                sendClick(index);
-                            };
-                            buttonsContainer.appendChild(button);
-                        });
+                        var newButtonCount = data.names.length;
+                        var existingButtonCount = buttons.length;
+
+                        // 새로운 버튼이 많은 경우
+                        if (newButtonCount > existingButtonCount) {
+                            for (var i = existingButtonCount; i < newButtonCount; i++) {
+                                var name = data.names[i];
+                                var button = document.createElement('button');
+                                button.textContent = name;
+                                button.setAttribute('aria-labelledby', 'button-label-' + i);
+                                button.setAttribute('tabindex', '0');
+                                button.setAttribute('role', 'button');
+                                button.onclick = (function (index) {
+                                    return function () {
+                                        sendClick(index);
+                                    };
+                                })(i);
+                                buttons.push(button); // 버튼 배열에 추가
+                                buttonsContainer.appendChild(button);
+                            }
+                        }
+                        // 기존 버튼이 많은 경우
+                        else if (newButtonCount < existingButtonCount) {
+                            for (var i = newButtonCount; i < existingButtonCount; i++) {
+                                buttonsContainer.removeChild(buttons[i]); // 버튼 삭제
+                            }
+                            buttons.splice(newButtonCount); // 배열에서도 삭제
+                        }
+
+                        // 기존 버튼이 있으면 텍스트만 업데이트
+                        for (var i = 0; i < Math.min(existingButtonCount, newButtonCount); i++) {
+                            buttons[i].textContent = data.names[i];
+                        }
                     }
                 }
             };
