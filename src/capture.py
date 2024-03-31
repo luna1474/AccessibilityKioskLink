@@ -32,7 +32,7 @@ class capture():
 
         # 현재 시간을 기반으로 파일 이름을 생성합니다.
         timestamp = int(time.time())
-        filename = f"{output_directory}{timestamp}.jpg"
+        filename = f"{self.output_directory}{timestamp}.jpg"
 
         # JPEG로 프레임을 저장합니다.
         cv2.imwrite(filename, frame)
