@@ -2,7 +2,6 @@ import time
 from ocr import *
 from capture import *
 from socketlib import *
-from seriallib import *
 from mouselib import *
 import cv2
 import queue
