@@ -17,7 +17,7 @@ mouse_queue = queue.Queue()
 ocr_model = ocr()
 webserver_model = webserver(main_queue, webserver_queue)
 socket_model = socketlib("client", "172.30.101.158", 5050, main_queue, socket_queue)
-mouse_model = mouselib("client", "172.30.48.153", 5051, None, mouse_queue)
+mouse_model = mouselib("client", "172.30.101.158", 5051, None, mouse_queue)
 
 webserver_model.start()
 socket_model.start()
