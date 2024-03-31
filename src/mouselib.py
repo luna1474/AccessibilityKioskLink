@@ -12,7 +12,7 @@ class mouselib(socketlib.socketlib):
     def run(self):
         if (self._mode == "server"):
             import serial
-            ser = serial.Serial('/dev/ttyS0', 9600)  # Change '/dev/ttyS0' to the appropriate UART port
+            self.ser = serial.Serial('/dev/ttyS0', 9600)  # Change '/dev/ttyS0' to the appropriate UART port
             self.run_server()
 
             while (self._running):
