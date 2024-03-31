@@ -1,8 +1,8 @@
 import time
-from ocr import *
-from capture import *
-from socketlib import *
-from mouselib import *
+from ocr import ocr
+from capture import capture
+from socketlib import socketlib
+from mouselib import mouselib
 import cv2
 import queue
 import os
@@ -18,7 +18,6 @@ if __name__ == '__main__':
     server_model.start()
 
     cap = capture()
-    serial_to_pico = seriallib()
     time.sleep(5)
 
     while True:
