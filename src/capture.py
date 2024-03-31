@@ -5,7 +5,7 @@ import os
 class capture():
     def __init__(self):
         # JPEG 이미지를 저장할 디렉토리를 지정합니다.
-        self.output_directory = "./projects/"
+        self.output_directory = "./AccessibilityKioskLink/"
 
         # USB 캡처 장치에서 비디오를 가져옵니다.
         self.cap = cv2.VideoCapture(0)  # 0은 기본 카메라 장치입니다. USB 캡처 장치의 경우 다른 인덱스를 사용해야 할 수 있습니다.
