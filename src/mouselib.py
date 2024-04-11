@@ -18,6 +18,7 @@ class mouselib(socketlib.socketlib):
             while (self._running):
                 try:
                     data: str = self.my_recv(1024)
+                    print(data)
                     self.ser.write(data.encode()) # command to pico
                 except Exception as e:
                     print(e)
