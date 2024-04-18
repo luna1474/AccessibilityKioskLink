@@ -2,7 +2,6 @@ from webserver import webserver
 from socketlib import socketlib
 from ocr import ocr
 from Msg import Msg
-from mouselib import mouselib
 
 import time
 import queue
@@ -17,11 +16,9 @@ mouse_queue = queue.Queue()
 ocr_model = ocr()
 webserver_model = webserver(main_queue, webserver_queue)
 socket_model = socketlib("client", "172.30.101.158", 5050, main_queue, socket_queue)
-mouse_model = mouselib("client", "172.30.101.158", 5051, None, mouse_queue)
 
 webserver_model.start()
 socket_model.start()
-mouse_model.start()
 
 while(True):
     if not main_queue.empty():
@@ -40,18 +37,15 @@ while(True):
                 webserver_queue.queue.clear()
             webserver_queue.put(name_list)
             
-            msg = Msg()
-            msg.msg = "ready"
-            socket_queue.put(msg)
         elif msg.msg == "mouse":
             try:
                 obj = ocr_results[msg.idx]
                 print(obj)
                 msg = Msg()
-                msg.msg = "mouse xy"
+                msg.msg = "mouse"
                 msg.x = obj[1]
                 msg.y = obj[2]
-                mouse_queue.put(msg)
+                socket_queue.put(msg)
             except:
                 print("indexing error")
 

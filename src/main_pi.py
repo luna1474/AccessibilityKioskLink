@@ -9,8 +9,12 @@ import os
 import sys
 from Msg import Msg
 
+import serial
+
 
 if __name__ == '__main__':
+    ser = serial.Serial('/dev/ttyS0', 9600)  # Change '/dev/ttyS0' to the appropriate UART port
+
     socket_queue = queue.Queue()
     main_queue = queue.Queue()
     server_model = socketlib("server", "0.0.0.0", 5050, main_queue, socket_queue)
@@ -32,9 +36,13 @@ if __name__ == '__main__':
             time.sleep(1)
         print("received msg")
         msg = main_queue.get()
-        if msg.msg != "ready":
+        if msg.msg != "mouse":
             print("fatal error")
             break
+
+        data: str = f"click,{msg.x},{msg.y}"
+        print(data)
+        ser.write(data.encode()) # command to pico
 
     cap.stop()
     server_model.stop()
