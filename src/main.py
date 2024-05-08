@@ -50,7 +50,7 @@ while(True):
                 print("indexing error")
 
     else:
-        time.sleep(0.2)
+        time.sleep(0.1)
 
 webserver_model.join()
 socket_model.join()
