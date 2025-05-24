@@ -40,8 +40,6 @@ To better understand the flow, please see the following examples (actual files t
 *   **Usage Flow GIF:** `![User Interaction Flow](./assets/kiosk_usage_flow.gif)` (Illustrates the complete interaction from phone to kiosk)
 *   **OCR Interface Example:** `![OCR Web Interface](./assets/ocr_interface_example.png)` (Shows an example of the kiosk screen rendered as a web page)
 
-*(Note: Developers, please create an `assets` directory in the project root and place `kiosk_usage_flow.gif` and `ocr_interface_example.png` inside it.)*
-
 ## How to Use (End User)
 
 1.  **Connect to the System:** Follow the specific instructions provided at the kiosk location to connect your smartphone to the accessibility system (this might involve scanning a QR code, connecting to a specific Wi-Fi network, or opening a specific URL in your phone's browser).
